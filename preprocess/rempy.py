@@ -18,30 +18,18 @@ def load_stateidx(ppath, name, my_ann = True):
     else:
         sfile = os.path.join(ppath, name, 'remidx_' + name + '.txt')
         
-    f = open(sfile, 'r')
-    lines = f.readlines()
-    f.close()
-    
-    n = 0
-    for l in lines:
-        if re.match('\d', l):
-            n += 1
-            
-    M = np.zeros(n, dtype='int')
-    K = np.zeros(n, dtype='int')
-    
-    i = 0
-    for l in lines :
-        
-        if re.search('^\s+$', l) :
+    with open(sfile) as f:
+        lines = f.readlines()
+
+    M = []
+    K = []
+    for line in lines:
+        if line.startswith('#') or line.isspace():
             continue
-        if re.search('\s*#', l) :
+        a = line.strip().split()
+        if len(a) != 2:
             continue
-        
-        if re.match('\d+\s+-?\d+', l) :
-            a = re.split('\s+', l)
-            M[i] = int(a[0])
-            K[i] = int(a[1])
-            i += 1
-            
+        M.append(int(a[0]))
+        K.append(int(a[1]))
+
     return M,K
