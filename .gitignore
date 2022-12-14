@@ -163,4 +163,4 @@ cython_debug/
 /data
 
 # other
-preprocess/test.ipynb
+/preprocess/test.ipynb
