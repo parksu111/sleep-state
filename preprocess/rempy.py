@@ -49,3 +49,19 @@ def decode(M):
     state_dict = {0:'N', 1:'R', 2:'W', 3:'N', 4:'N', 5:'N', 6:'N'}
     res = [state_dict[x] for x in M]
     return res
+
+def encode(M):
+    """
+    Convert annotated states from letter code to number code.
+    @Params:
+        M       List containing sleep states (string) of a recording extracted from remidx file.
+    
+    @Return:
+        res     List containing converted sleep states
+                0 = N
+                1 = R
+                2 = W
+    """    
+    state_dict = {'N':0, "R":1, "W":2}
+    res = [state_dict[x] for x in M]
+    return res
