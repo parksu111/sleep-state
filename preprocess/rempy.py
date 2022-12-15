@@ -33,3 +33,19 @@ def load_stateidx(ppath, name, my_ann = True):
         K.append(int(a[1]))
 
     return M,K
+
+def decode(M):
+    """
+    Convert annotated states from number code to letter code.
+    @Params:
+        M       List containing sleep states (int) of a recording extracted from remidx file.
+    
+    @Return:
+        res     List containing converted sleep states
+                REM = R
+                NREM = N
+                WAKE = W
+    """
+    state_dict = {0:'N', 1:'R', 2:'W', 3:'N', 4:'N', 5:'N', 6:'N'}
+    res = [state_dict[x] for x in M]
+    return res
