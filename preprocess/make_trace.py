@@ -16,12 +16,13 @@ csvdst = '/workspace/Competition/SLEEP/EEG/data/'
 # List all recordings
 recordings = os.listdir(ppath)
 recordings = [x for x in recordings if not x.startswith('.')]
+recordings = [x for x in recordings if not x=='HA41_081618n1']
 
 fname = []
 fstate = []
 
 # Loop through recordings, load raw signals, save each 2.5 second
-for rec in recordings:
+for rec in recordings[0::12]: # 1 in every 12 recordings
     print('Working on ' + rec + ' ...')
     # Load raw signals
     eeg1path = os.path.join(ppath, rec, 'EEG.mat')
