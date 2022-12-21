@@ -4,6 +4,7 @@ import rempy as rp
 from tqdm import tqdm
 import scipy.io as so
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Path containing recordings
 ppath = '/workspace/Competition/SLEEP/EEG/data/recordings'
