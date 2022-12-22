@@ -1,5 +1,5 @@
 from torch.utils.data import Dataset
-from modules.utils import load_json
+from modules.utils import load_json, encode
 import numpy as np
 from PIL import Image
 import os
