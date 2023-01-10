@@ -66,6 +66,5 @@ def encode(M):
     return res
 
 def power_spectrum(data, length, dt):
-    f, pxx = scipy.signal.welch(data, fs=1/dt, window='hanning', nperseg=int(length),
-                                noverlap=int(length/2))
+    f, pxx = scipy.signal.welch(data, fs=1/dt, window='hanning', nperseg=int(length), noverlap=int(length/2))
     return pxx, f
