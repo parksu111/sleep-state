@@ -17,57 +17,60 @@ csvdst = '/workspace/Competition/SLEEP/EEG/data/'
 # List all recordings
 recordings = os.listdir(ppath)
 recordings = [x for x in recordings if not x.startswith('.')]
-recordings = [x for x in recordings if not x=='HA41_081618n1']
 
 fname = []
 fstate = []
 
 # Loop through recordings, load raw signals, save each 2.5 second
-for rec in recordings[0::12]: # 1 in every 12 recordings
+for rec in recordings:
     print('Working on ' + rec + ' ...')
     # Load raw signals
     eeg1path = os.path.join(ppath, rec, 'EEG.mat')
     eeg2path = os.path.join(ppath, rec, 'EEG2.mat')
     emgpath = os.path.join(ppath, rec, 'EMG.mat')
     eeg1 = np.squeeze(so.loadmat(eeg1path)['EEG'])
-    if os.path.isfile(eeg2path):
-        eeg2 = np.squeeze(so.loadmat(eeg2path)['EEG2'])
+    eeg2 = np.squeeze(so.loadmat(eeg2path)['EEG2'])
     emg = np.squeeze(so.loadmat(emgpath)['EMG'])
     # Load annotations
-    M,S = rp.load_stateidx(ppath, rec)
+    M1,_ = rp.load_stateidx(ppath, rec, 'sp')
+    M2,_ = rp.load_stateidx(ppath, rec, 'jh')
+    M3,_ = rp.load_stateidx(ppath, rec, 'ha')
+    M4,_ = rp.load_stateidx(ppath, rec, 'js')
     # Loop through each 2.5 s time window
-    for i in tqdm(range(len(M)-1)):
-        figname = rec + '_' + str(i)
-        fig1dst = os.path.join(eeg1dst, figname)
-        fig2dst = os.path.join(eeg2dst, figname)
-        fig3dst = os.path.join(emgdst, figname)
+    figcnt = 0
+    for i in tqdm(range(len(M1)-1)):
+        if (M1[i]==M2[i])&(M2[i]==M3[i])&(M3[i]==M4[i]):
+            figname = rec + '_' + str(figcnt)
+            figcnt+=1
+            fig1dst = os.path.join(eeg1dst, figname)
+            fig2dst = os.path.join(eeg2dst, figname)
+            fig3dst = os.path.join(emgdst, figname)
 
-        cur_state = M[i]
-        subeeg1 = eeg1[i*2500:(i+1)*2500]
-        subemg = emg[i*2500:(i+1)*2500]
-
-        fname.append(figname)
-        fstate.append(cur_state)
-
-        fig1 = plt.figure()
-        plt.plot(np.arange(0,2500), subeeg1)
-        plt.axis('off')
-        fig1.savefig(fig1dst)
-        plt.close(fig1)
-
-        fig3 = plt.figure()
-        plt.plot(np.arange(0,2500), subemg)
-        plt.axis('off')
-        fig3.savefig(fig3dst)
-        plt.close(fig3)
-
-        if os.path.isfile(eeg2path):
+            cur_state = M1[i]
+            subeeg1 = eeg1[i*2500:(i+1)*2500]
             subeeg2 = eeg2[i*2500:(i+1)*2500]
+            subemg = emg[i*2500:(i+1)*2500]
+
+            fname.append(figname)
+            fstate.append(cur_state)
+
+            fig1 = plt.figure()
+            plt.plot(np.arange(0,2500), subeeg1)
+            plt.axis('off')
+            fig1.savefig(fig1dst)
+            plt.close(fig1)
+
             fig2 = plt.figure()
             plt.plot(np.arange(0,2500), subeeg2)
             plt.axis('off')
             fig2.savefig(fig2dst)
             plt.close(fig2)
+
+            fig3 = plt.figure()
+            plt.plot(np.arange(0,2500), subemg)
+            plt.axis('off')
+            fig3.savefig(fig3dst)
+            plt.close(fig3)
 
 # Make dataframe key
 keydf = pd.DataFrame(list(zip(fname, fstate)),columns=['imname','state'])
