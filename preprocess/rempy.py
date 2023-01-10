@@ -2,7 +2,7 @@ import os
 import numpy as np
 import re
 
-def load_stateidx(ppath, name, my_ann = True):
+def load_stateidx(ppath, name, annotator = 'sp'):
     """ 
     Load the sleep state annotation txt file of recording.
     @Params:
@@ -13,10 +13,8 @@ def load_stateidx(ppath, name, my_ann = True):
         M       List of sleep states corresponding to each 2.5 s window.
         K       List of 0's and 1's indicating whether or not a 
     """
-    if my_ann:
-        sfile = os.path.join(ppath, name, '3_remidx_' + name + '.txt')
-    else:
-        sfile = os.path.join(ppath, name, 'remidx_' + name + '.txt')
+    ann_key = {'sp':'3_remidx_', 'ha':'ha_remidx_','jh':'jh_remidx_','js':'js_remidx_'}
+    sfile = os.path.join(ppath,name,ann_key[annotator]+name+'.txt')
         
     with open(sfile) as f:
         lines = f.readlines()
