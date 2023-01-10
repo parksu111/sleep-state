@@ -20,6 +20,7 @@ recordings = [x for x in recordings if not x.startswith('.')]
 
 fname = []
 fstate = []
+o_index = []
 
 # Loop through recordings, load raw signals, save each 2.5 second
 for rec in recordings:
@@ -53,6 +54,7 @@ for rec in recordings:
 
             fname.append(figname)
             fstate.append(cur_state)
+            o_index.append(i)
 
             fig1 = plt.figure()
             plt.plot(np.arange(0,2500), subeeg1)
@@ -73,5 +75,5 @@ for rec in recordings:
             plt.close(fig3)
 
 # Make dataframe key
-keydf = pd.DataFrame(list(zip(fname, fstate)),columns=['imname','state'])
+keydf = pd.DataFrame(list(zip(fname, fstate, o_index)),columns=['imname','state','original_index'])
 keydf.to_csv(os.path.join(csvdst,'trace_key.csv'),index=False)
