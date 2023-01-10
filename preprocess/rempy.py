@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import re
+import scipy.signal
 
 def load_stateidx(ppath, name, annotator = 'sp'):
     """ 
@@ -63,3 +64,8 @@ def encode(M):
     state_dict = {'N':0, "R":1, "W":2}
     res = [state_dict[x] for x in M]
     return res
+
+def power_spectrum(data, length, dt):
+    f, pxx = scipy.signal.welch(data, fs=1/dt, window='hanning', nperseg=int(length),
+                                noverlap=int(length/2))
+    return pxx, f
