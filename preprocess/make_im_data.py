@@ -142,7 +142,7 @@ if __name__ == "__main__":
                 fstate.append(states[idx])
                 o_index.append(i)
     keydf = pd.DataFrame(list(zip(fnames,fstate,o_index)),columns=['fname','state','org_index'])
-    keypath = os.path.join('/workspace/Competition/SLEEP/EEG/data/',data_type+'_key.csv')
+    keypath = os.path.join('/workspace/Competition/SLEEP/EEG/data/',data_type+str(binlen)+'_key.csv')
     keydf.to_csv(keypath, index=False)
 
 
