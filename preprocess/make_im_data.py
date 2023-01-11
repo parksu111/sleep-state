@@ -86,7 +86,7 @@ if __name__ == "__main__":
     os.makedirs(emgdst, exist_ok=True)
 
     # input recordings
-    ppath = '/workspace/Competition/SLEEP/EEG/data/recordings/trial'
+    ppath = '/workspace/Competition/SLEEP/EEG/data/recordings/'
     recordings = os.listdir(ppath)
     recordings = [x for x in recordings if not x.startswith('.')]
 
@@ -123,7 +123,7 @@ if __name__ == "__main__":
             max_ind = len(M)-1
         # loop
         img_cnt = 0
-        for idx,i in tqdm(enumerate(inds[-5:])):
+        for idx,i in tqdm(enumerate(inds)):
             if (i>=min_ind)&(i<=max_ind):
                 fname = rec + '_' + str(img_cnt)
                 fpath1 = os.path.join(eeg1dst, fname)
