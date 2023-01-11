@@ -120,7 +120,7 @@ if __name__ == "__main__":
             max_ind = len(M)-3
         if binlen == 1:
             min_ind = 0
-            max_ind = len(M)-1
+            max_ind = len(M)-3
         # loop
         img_cnt = 0
         for idx,i in tqdm(enumerate(inds)):
