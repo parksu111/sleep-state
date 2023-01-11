@@ -76,7 +76,7 @@ for rec in recordings:
             fstate.append(cur_state)
             o_index.append(i)
 
-            fig1 = plt.figure()
+            fig1 = plt.figure(figsize=(2.0,4.2),dpi=100)
             plt.subplots_adjust(top=1,bottom=0,right=1,left=0,hspace=0,wspace=0)
             plt.imshow(totPow1,cmap='hot',interpolation='nearest',origin='lower')
             plt.gca().set_axis_off()
@@ -87,7 +87,7 @@ for rec in recordings:
             fig1.savefig(fig1dst)
             plt.close(fig1)
 
-            fig2 = plt.figure()
+            fig2 = plt.figure(figsize=(2.0,4.2),dpi=100)
             plt.subplots_adjust(top=1,bottom=0,right=1,left=0,hspace=0,wspace=0)
             plt.imshow(totPow2,cmap='hot',interpolation='nearest',origin='lower')
             plt.gca().set_axis_off()
@@ -98,7 +98,7 @@ for rec in recordings:
             fig2.savefig(fig2dst)
             plt.close(fig2)
 
-            fig3 = plt.figure()
+            fig3 = plt.figure(figsize=(2.0,4.2),dpi=100)
             plt.subplots_adjust(top=1,bottom=0,right=1,left=0,hspace=0,wspace=0)
             plt.imshow(totPow3,cmap='hot',interpolation='nearest',origin='lower')
             plt.gca().set_axis_off()
