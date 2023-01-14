@@ -104,4 +104,4 @@ y_preds_decoded = [label_decoding[x] for x in y_preds]
 predictions = pd.DataFrame(list(zip(img_names, y_preds_decoded)),columns=['fname','state'])
 
 outpath = '/workspace/Competition/SLEEP/EEG/data/results'
-predictions.to_csv(os.path.join(outpath, 'predictions.csv'))
+predictions.to_csv(os.path.join(outpath, 'predictions.csv'),index=False)
