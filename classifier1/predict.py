@@ -84,6 +84,7 @@ test_loader = DataLoader(dataset = test_dataset,
                         pin_memory = PIN_MEMORY,
                         drop_last = DROP_LAST)
 
+# make predictions
 model.eval()
 
 y_preds = []
@@ -91,9 +92,16 @@ img_names = []
 
 for batch_index, (x, img_id) in enumerate(tqdm(test_loader)):
     x = x.to(DEVICE)
-    y_logits = mode(x).cpu()
+    y_logits = model(x).cpu()
     y_pred = torch.argmax(y_logits, dim=1)
+    y_pred = y_pred.tolist()
     img_names.extend(img_id)
     y_preds.extend(y_pred)
 
+# make predictions into dataframe
+label_decding = {0:'N',1:'R',2:'W'}
+y_preds_decoded = [label_decoding[x] for x in y_preds]
+predictions = pd.DataFrame(list(zip(img_names, y_preds_decoded)),columns=['fname','state'])
 
+outpath = '/workspace/Competition/SLEEP/EEG/data/results'
+predictions.to_csv(os.path.join(outpath, 'predictions.csv'))
