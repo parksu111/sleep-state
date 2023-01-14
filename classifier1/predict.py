@@ -99,7 +99,7 @@ for batch_index, (x, img_id) in enumerate(tqdm(test_loader)):
     y_preds.extend(y_pred)
 
 # make predictions into dataframe
-label_decding = {0:'N',1:'R',2:'W'}
+label_decoding = {0:'N',1:'R',2:'W'}
 y_preds_decoded = [label_decoding[x] for x in y_preds]
 predictions = pd.DataFrame(list(zip(img_names, y_preds_decoded)),columns=['fname','state'])
 
