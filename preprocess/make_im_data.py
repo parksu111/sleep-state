@@ -66,6 +66,7 @@ def make_spec_middle(raw_sig, bin_index, bin_length, fname):
 if __name__ == "__main__":
     # Arguments
     parser = argparse.ArgumentParser()
+    parser.add_argument('--input_dir', type=pathlib.Path, required=True, help='Path to input directory')
     parser.add_argument('--output_dir', type=pathlib.Path, required=True, help='Path to output directory')
     parser.add_argument('--datatype', choices=['trace','spectrogram'],default='trace',help='Type of image data to save')
     parser.add_argument('--num_bins', type=int, choices=[1,3], default=1, required=True, help='Number of bins')
