@@ -73,6 +73,7 @@ if __name__ == "__main__":
 
     # read arguments
     args = parser.parse_args()
+    ppath = args.input_dir
     outpath = args.output_dir
     data_type = args.datatype
     binlen = args.num_bins
@@ -87,7 +88,6 @@ if __name__ == "__main__":
     os.makedirs(emgdst, exist_ok=True)
 
     # input recordings
-    ppath = '/workspace/Competition/SLEEP/EEG/data/recordings/'
     recordings = os.listdir(ppath)
     recordings = [x for x in recordings if not x.startswith('.')]
 
