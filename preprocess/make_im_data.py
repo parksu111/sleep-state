@@ -72,6 +72,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_bins', type=int, choices=[1,3], default=1, required=True, help='Number of bins')
     parser.add_argument('--common_labels', type=int, choices=[0,1], default=1, required=True, help='Use common labels')
     parser.add_argument('--title', type=str, default='key.csv')
+    parser.add_argument('--channel', type=int, choices=[0,1,2,3], required=True, help='Choose channel')
 
     # read arguments
     args = parser.parse_args()
@@ -81,15 +82,21 @@ if __name__ == "__main__":
     binlen = args.num_bins
     use_common = args.common_labels
     title = args.title
+    channel = args.channel
 
-    # path to output images
-    eeg1dst = os.path.join(outpath, 'eeg1')
-    eeg2dst = os.path.join(outpath, 'eeg2')
-    emgdst = os.path.join(outpath, 'emg')
-    # make output directories
-    os.makedirs(eeg1dst, exist_ok=True)
-    os.makedirs(eeg2dst, exist_ok=True)
-    os.makedirs(emgdst, exist_ok=True)
+    # channels
+    all_channels = ['eeg1','eeg2','emg']
+    channel_type = ['EEG', 'EEG2', 'EMG']
+    if channel==3:
+        channel_inds = [0,1,2]
+    else:
+        channel_inds = [channel]
+    # Make output directories
+    srcpaths = []
+    for ch_ind in channel_inds:
+        srcdst = os.path.join(os.path.join(outpath), all_channels[ch_ind])
+        os.makedirs(srcdst, exist_ok = True)
+        srcpaths.append(srcdst)
 
     # input recordings
     recordings = os.listdir(ppath)
@@ -109,13 +116,6 @@ if __name__ == "__main__":
 
     for rec in recordings:
         print('Working on ' + rec + ' ...')
-        # Load raw signals
-        eeg1path = os.path.join(ppath, rec, 'EEG.mat')
-        eeg2path = os.path.join(ppath, rec, 'EEG2.mat')
-        emgpath = os.path.join(ppath, rec, 'EMG.mat')
-        eeg1 = np.squeeze(so.loadmat(eeg1path)['EEG'])
-        eeg2 = np.squeeze(so.loadmat(eeg2path)['EEG2'])
-        emg = np.squeeze(so.loadmat(emgpath)['EMG'])
         # Load annotations
         M,_ = rp.load_stateidx(ppath, rec, 'sp')
         if use_common==1:
@@ -131,29 +131,27 @@ if __name__ == "__main__":
         if binlen == 1:
             min_ind = 0
             max_ind = len(M)-3
-        # loop
-        img_cnt = 0
-        for idx,i in tqdm(enumerate(inds)):
-            if (i>=min_ind)&(i<=max_ind):
-                if use_common==1:
-                    fname = rec + '_' + str(img_cnt)
-                else:
-                    fname = rec + '_' + str(i)
-                fpath1 = os.path.join(eeg1dst, fname)
-                fpath2 = os.path.join(eeg2dst, fname)
-                fpath3 = os.path.join(emgdst, fname)
-                if data_type == "trace":
-                    make_trace_middle(eeg1,i,binlen,fpath1)
-                    make_trace_middle(eeg2,i,binlen,fpath2)
-                    make_trace_middle(emg,i,binlen,fpath3)
-                if data_type == "spectrogram":
-                    make_spec_middle(eeg1,i,binlen,fpath1)
-                    make_spec_middle(eeg2,i,binlen,fpath2)
-                    make_spec_middle(emg,i,binlen,fpath3)
-                img_cnt+=1
-                fnames.append(fname)
-                fstate.append(states[idx])
-                o_index.append(i)
+        # Load raw signals
+        for ch_ind in channel_inds:
+            sigpath = os.path.join(ppath, rec, channel_type[ch_ind]+'.mat')
+            rawsignal = np.squeeze(so.loadmat(sigpath)[channel_type[ch_ind]])
+            # loop
+            img_cnt = 0
+            for idx,i in tqdm(enumerate(inds)):
+                if (i>=min_ind)&(i<=max_ind):
+                    if use_common==1:
+                        fname = rec + '_' + str(img_cnt)
+                    else:
+                        fname = rec + '_' + str(i)
+                    fpath = os.path.join(srcpaths[ch_ind], fname)
+                    if data_type == "trace":
+                        make_trace_middle(rawsignal,i,binlen,fpath)
+                    if data_type == "spectrogram":
+                        make_spec_middle(rawsignal,i,binlen,fpath)
+                    img_cnt+=1
+                    fnames.append(fname)
+                    fstate.append(states[idx])
+                    o_index.append(i)
     keydf = pd.DataFrame(list(zip(fnames,fstate,o_index)),columns=['fname','state','org_index'])
     keypath = os.path.join(outpath,title)
     keydf.to_csv(keypath, index=False)
