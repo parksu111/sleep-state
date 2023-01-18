@@ -70,6 +70,8 @@ if __name__ == "__main__":
     parser.add_argument('--output_dir', type=pathlib.Path, required=True, help='Path to output directory')
     parser.add_argument('--datatype', choices=['trace','spectrogram'],default='trace',help='Type of image data to save')
     parser.add_argument('--num_bins', type=int, choices=[1,3], default=1, required=True, help='Number of bins')
+    parser.add_argument('--common_labels', type=int, choices=[0,1], default=1, required=True, help='Use common labels')
+    parser.add_argument('--title', type=str, default='key.csv')
 
     # read arguments
     args = parser.parse_args()
@@ -77,6 +79,8 @@ if __name__ == "__main__":
     outpath = args.output_dir
     data_type = args.datatype
     binlen = args.num_bins
+    use_common = args.common_labels
+    title = args.title
 
     # path to output images
     eeg1dst = os.path.join(outpath, 'eeg1')
@@ -92,7 +96,8 @@ if __name__ == "__main__":
     recordings = [x for x in recordings if not x.startswith('.')]
 
     # commonly labelled bins
-    clabels = json.load(open('/workspace/Competition/SLEEP/EEG/data/common_labels.json'))
+    if use_common==1:
+        clabels = json.load(open('/workspace/Competition/SLEEP/EEG/data/common_labels.json'))
 
     # valid range
     if binlen == 3:
@@ -112,9 +117,13 @@ if __name__ == "__main__":
         eeg2 = np.squeeze(so.loadmat(eeg2path)['EEG2'])
         emg = np.squeeze(so.loadmat(emgpath)['EMG'])
         # Load annotations
-        inds = clabels[rec]["ind"]
-        states = clabels[rec]["state"]
         M,_ = rp.load_stateidx(ppath, rec, 'sp')
+        if use_common==1:
+            inds = clabels[rec]["ind"]
+            states = clabels[rec]["state"]
+        else:
+            inds = list(range(len(M)))
+            states = M
         # valid range
         if binlen == 3:
             min_ind = 1
@@ -126,7 +135,10 @@ if __name__ == "__main__":
         img_cnt = 0
         for idx,i in tqdm(enumerate(inds)):
             if (i>=min_ind)&(i<=max_ind):
-                fname = rec + '_' + str(img_cnt)
+                if use_common==1:
+                    fname = rec + '_' + str(img_cnt)
+                else:
+                    fname = rec + '_' + str(i)
                 fpath1 = os.path.join(eeg1dst, fname)
                 fpath2 = os.path.join(eeg2dst, fname)
                 fpath3 = os.path.join(emgdst, fname)
@@ -143,7 +155,7 @@ if __name__ == "__main__":
                 fstate.append(states[idx])
                 o_index.append(i)
     keydf = pd.DataFrame(list(zip(fnames,fstate,o_index)),columns=['fname','state','org_index'])
-    keypath = os.path.join('/workspace/Competition/SLEEP/EEG/data/',data_type+str(binlen)+'_key.csv')
+    keypath = os.path.join(outpath,title)
     keydf.to_csv(keypath, index=False)
 
 
