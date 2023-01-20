@@ -19,10 +19,6 @@ from sklearn.metrics import accuracy_score, f1_score
 import argparse
 import pathlib
 
-# Data directory
-DATA_DIR = '/workspace/Competition/SLEEP/EEG/data/'
-TEST_DIR = os.path.join(DATA_DIR, 'test', 'trace1', 'eeg1')
-
 # DATASET
 class TestDataset(Dataset):
     def __init__(self, datapath):
@@ -68,6 +64,7 @@ if __name__ == "__main__":
     # Arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_dir', type=pathlib.Path, required=True, help='Path to saved model weights')
+    parser.add_argument('--input_dir', type=pathlib.Path, required=True, help='Path to input data')
     parser.add_argument('--output_dir', type=pathlib.Path, required=True, help='Path to output predictions')
     parser.add_argument('--pred_name', type=str, required=True, help='Name of prediction file')
 
@@ -91,6 +88,8 @@ if __name__ == "__main__":
     SHUFFLE = False
     PIN_MEMORY = True
     DROP_LAST = False
+
+    TEST_DIR = args.input_dir
 
     test_dataset = TestDataset(datapath = TEST_DIR)
     test_loader = DataLoader(dataset = test_dataset,
