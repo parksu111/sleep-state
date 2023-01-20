@@ -16,6 +16,9 @@ from PIL import Image
 from torchvision import datasets, models, transforms
 from sklearn.metrics import accuracy_score, f1_score
 
+import argparse
+import pathlib
+
 # Data directory
 DATA_DIR = '/workspace/Competition/SLEEP/EEG/data/'
 TEST_DIR = os.path.join(DATA_DIR, 'test', 'trace1', 'eeg1')
@@ -61,47 +64,61 @@ class ResNet_frozen(nn.Module):
         x = self.model(x)
         return x
 
-os.environ['CUDA_VISIBLE_DEVICES']="1"
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+if __name__ == "__main__":
+    # Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_dir', type=pathlib.Path, required=True, help='Path to saved model weights')
+    parser.add_argument('--output_dir', type=pathlib.Path, required=True, help='Path to output predictions')
+    parser.add_argument('--pred_name', type=str, required=True, help='Name of prediction file')
 
-best_model_path = '/workspace/Competition/SLEEP/EEG/data/results/best.pt'
-model = ResNet_frozen()
-checkpoint = torch.load(best_model_path)
-model.load_state_dict(checkpoint['model'])
-model.to(DEVICE)
+    # read arguments
+    args = parser.parse_args()
 
-BATCH_SIZE = 1
-NUM_WORKERS = 1
-SHUFFLE = False
-PIN_MEMORY = True
-DROP_LAST = False
+    # Device
+    os.environ['CUDA_VISIBLE_DEVICES']="1"
+    DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-test_dataset = TestDataset(datapath = TEST_DIR)
-test_loader = DataLoader(dataset = test_dataset,
-                        batch_size = BATCH_SIZE,
-                        num_workers = NUM_WORKERS,
-                        shuffle = SHUFFLE,
-                        pin_memory = PIN_MEMORY,
-                        drop_last = DROP_LAST)
+    # Load model weights
+    best_model_path = args.model_dir
+    model = ResNet_frozen()
+    checkpoint = torch.load(best_model_path)
+    model.load_state_dict(checkpoint['model'])
+    model.to(DEVICE)
 
-# make predictions
-model.eval()
+    # dataloader
+    BATCH_SIZE = 1
+    NUM_WORKERS = 1
+    SHUFFLE = False
+    PIN_MEMORY = True
+    DROP_LAST = False
 
-y_preds = []
-img_names = []
+    test_dataset = TestDataset(datapath = TEST_DIR)
+    test_loader = DataLoader(dataset = test_dataset,
+                            batch_size = BATCH_SIZE,
+                            num_workers = NUM_WORKERS,
+                            shuffle = SHUFFLE,
+                            pin_memory = PIN_MEMORY,
+                            drop_last = DROP_LAST)
 
-for batch_index, (x, img_id) in enumerate(tqdm(test_loader)):
-    x = x.to(DEVICE)
-    y_logits = model(x).cpu()
-    y_pred = torch.argmax(y_logits, dim=1)
-    y_pred = y_pred.tolist()
-    img_names.extend(img_id)
-    y_preds.extend(y_pred)
+    # make predictions
+    model.eval()
 
-# make predictions into dataframe
-label_decoding = {0:'N',1:'R',2:'W'}
-y_preds_decoded = [label_decoding[x] for x in y_preds]
-predictions = pd.DataFrame(list(zip(img_names, y_preds_decoded)),columns=['fname','state'])
+    y_preds = []
+    img_names = []
 
-outpath = '/workspace/Competition/SLEEP/EEG/data/results'
-predictions.to_csv(os.path.join(outpath, 'predictions.csv'),index=False)
+    for batch_index, (x, img_id) in enumerate(tqdm(test_loader)):
+        x = x.to(DEVICE)
+        y_logits = model(x).cpu()
+        y_pred = torch.argmax(y_logits, dim=1)
+        y_pred = y_pred.tolist()
+        img_names.extend(img_id)
+        y_preds.extend(y_pred)
+
+    # make predictions into dataframe
+    label_decoding = {0:'N',1:'R',2:'W'}
+    y_preds_decoded = [label_decoding[x] for x in y_preds]
+    predictions = pd.DataFrame(list(zip(img_names, y_preds_decoded)),columns=['fname','state'])
+
+    outpath = args.output_dir
+    outname = args.pred_name
+    predictions.to_csv(os.path.join(outpath, outname),index=False)
