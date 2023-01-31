@@ -9,7 +9,7 @@ The data used for this project were made available by dedicated researchers at t
 University of Pennsylvania Perelman School of Medicine.
 
 ## Data
-The data used for this project is available for download [here](). It is the same data used for the 2021 paper 'A probabilistic model for the ultradian timing of REM sleep in mice', which can be found [here]().
+The data used for this project is available for download [here](). It is the same data used for the 2021 paper 'A probabilistic model for the ultradian timing of REM sleep in mice', which can be found [here](). The data repository contains 2 folders, 'code' and 'recordings'. The sleep recordings are in the 'recordings' folder.
 
 ### Recording Folder
 Each recording folder has a title of the following structure: 'XXX_XXXXXXn1'.
