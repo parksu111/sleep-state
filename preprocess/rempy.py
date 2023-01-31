@@ -33,6 +33,20 @@ def load_stateidx(ppath, name, annotator = 'sp'):
 
     return M,K
 
+def get_sr(ppath, name):
+    """
+    read and return sampling rate (SR) from the info.txt file $ppath/$name/info.txt 
+    """
+    fid = open(os.path.join(ppath, name, 'info.txt'), newline=None)
+    lines = fid.readlines()
+    fid.close()
+    values = []
+    for l in lines :
+        a = re.search("^" + 'SR' + ":" + "\s+(.*)", l)
+        if a :
+            values.append(a.group(1))            
+    return float(values[0])
+
 def decode(M):
     """
     Convert annotated states from number code to letter code.
