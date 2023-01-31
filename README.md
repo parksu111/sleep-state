@@ -26,6 +26,7 @@ Each recording folder contains 7 different files:
   * 1 - REM
   * 2 - Wake
   * 3 - REM
+* **info.txt** - A text file containing basic information about the recording such as sampling rate, duration of the recording, etc.
 * Each recording is typically 8 hours or 24 hours long.
 
 ### EDA
