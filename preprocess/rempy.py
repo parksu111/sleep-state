@@ -68,3 +68,46 @@ def encode(M):
 def power_spectrum(data, length, dt):
     f, pxx = scipy.signal.welch(data, fs=1/dt, window='hanning', nperseg=int(length), noverlap=int(length/2))
     return pxx, f
+
+'''
+Functions to deal with remidx sequences
+'''
+def nts(M):
+    """
+    Receive list of states coded as number and change to letters representing state
+    """
+    rvec = [None]*len(M)
+    for idx,x in enumerate(M):
+        if x==1:
+            rvec[idx]='R'
+        elif x==2:
+            rvec[idx]='W'
+        else:
+            rvec[idx]='N'
+    return rvec
+
+def vecToTup(rvec, start=0):
+    """
+    Receive list of states and change to a list of tuples (state, duration, starting index)
+    """
+    result = []
+    cnt1 = 0
+    i_start = start
+    sum1 = 1
+    curr = 'a'
+    while cnt1 < len(rvec)-1:
+        curr = rvec[cnt1]
+        nxt = rvec[cnt1+1]
+        if curr==nxt:
+            sum1+=1
+        else:
+            result.append((curr, sum1, i_start))
+            sum1=1
+        cnt1+=1
+        i_start+=1
+    last = rvec[-1]
+    if curr==last:
+        result.append((curr, sum1, i_start))
+    else:
+        result.append((last, sum1, i_start))
+    return result
