@@ -140,6 +140,20 @@ def nrt_locations(tupList):
         cnt1+=1
     return nrt_locs
 
+def ranges(nums):
+    nums = sorted(set(nums))
+    gaps = [[s, e] for s, e in zip(nums, nums[1:]) if s+1 < e]
+    edges = iter(nums[:1] + sum(gaps, []) + nums[-1:])
+    return list(zip(edges, edges))
+
+def stateIndex(sub, stateInds):
+    res = []
+    for x in stateInds:
+        cur = sub[x]
+        curIndex = list(np.arange(cur[2]-cur[1]+1,cur[2]+1))
+        res.extend(curIndex)
+    return res
+
 def stateSeq(sub, stateInds):
     stateIndices = stateIndex(sub, stateInds)
     stateRanges = ranges(stateIndices)
