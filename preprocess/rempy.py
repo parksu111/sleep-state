@@ -139,3 +139,11 @@ def nrt_locations(tupList):
             nrt_locs.append(cnt1+1)
         cnt1+=1
     return nrt_locs
+
+def stateSeq(sub, stateInds):
+    stateIndices = stateIndex(sub, stateInds)
+    stateRanges = ranges(stateIndices)
+    stateSeqs = []
+    for x in stateRanges:
+        stateSeqs.append(np.arange(x[0],x[1]+1))
+    return stateSeqs
