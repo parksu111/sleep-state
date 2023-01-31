@@ -125,3 +125,17 @@ def vecToTup(rvec, start=0):
     else:
         result.append((last, sum1, i_start))
     return result
+
+def nrt_locations(tupList):
+    """
+    Receive list of tuples and return index of NREM-->REM transitions
+    """
+    nrt_locs = []
+    cnt1 = 0
+    while cnt1 < len(tupList)-1:
+        curr = tupList[cnt1]
+        nxt = tupList[cnt1+1]
+        if (curr[0]=='N')&(nxt[0]=='R'):
+            nrt_locs.append(cnt1+1)
+        cnt1+=1
+    return nrt_locs
