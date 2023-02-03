@@ -2,6 +2,9 @@ import os
 import numpy as np
 import re
 import scipy.signal
+import scipy.io as so
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 def load_stateidx(ppath, name, annotator = 'sp'):
     """ 
@@ -162,9 +165,48 @@ def stateSeq(sub, stateInds):
         stateSeqs.append(np.arange(x[0],x[1]+1))
     return stateSeqs
 
+def get_sequences(idx, ibreak=1) :  
+    """
+    get_sequences(idx, ibreak=1)
+    idx     -    np.vector of indices
+    @RETURN:
+    seq     -    list of np.vectors
+    """
+    diff = idx[1:] - idx[0:-1]
+    breaks = np.nonzero(diff>ibreak)[0]
+    breaks = np.append(breaks, len(idx)-1)
+    
+    seq = []    
+    iold = 0
+    for i in breaks:
+        r = list(range(iold, i+1))
+        seq.append(idx[r])
+        iold = i+1
+        
+    return seq
+
 '''
 Plot
 '''
+def set_fontsize(fs):
+    import matplotlib
+    matplotlib.rcParams.update({'font.size': fs})
+
+def set_fontarial():
+    """
+    set Arial as default font
+    """
+    import matplotlib
+    matplotlib.rcParams['font.sans-serif'] = "Arial"
+
+def box_off(ax):
+    """
+    similar to Matlab's box off
+    """
+    ax.spines["top"].set_visible(False)    
+    ax.spines["right"].set_visible(False)
+    ax.get_xaxis().tick_bottom()  
+    ax.get_yaxis().tick_left()  
 
 def sleep_example(ppath, name, tlegend, tstart, tend, fmax=30, fig_file='', vm=[], ma_thr=10,
                   fontsize=12, cb_ticks=[], emg_ticks=[], r_mu = [10, 100], fw_color=True):
@@ -191,7 +233,7 @@ def sleep_example(ppath, name, tlegend, tstart, tend, fmax=30, fig_file='', vm=[
     # True, if laser exists, otherwise set to False
     plaser = False
 
-    sr = get_snr(ppath, name)
+    sr = get_sr(ppath, name)
     nbin = np.round(2.5 * sr)
     dt = nbin * 1 / sr
 
@@ -205,12 +247,6 @@ def sleep_example(ppath, name, tlegend, tstart, tend, fmax=30, fig_file='', vm=[
     if tend==-1:
         iend = len(M)
     M = M[istart:iend]
-
-    seq = get_sequences(np.where(M==2)[0])
-    for s in seq:
-        if len(s)*dt <= ma_thr:
-            M[s] = 0
-
     t = np.arange(0, len(M))*dt
 
     P = so.loadmat(os.path.join(ppath, name, 'sp_%s.mat' % name), squeeze_me=True)
@@ -314,8 +350,5 @@ def sleep_example(ppath, name, tlegend, tstart, tend, fmax=30, fig_file='', vm=[
     plt.ylabel('Ampl. ' + '$\mathrm{(\mu V)}$')
     plt.xlim((t[0], t[-1] + 1))
     box_off(axes_emg)
-
-    #if len(fig_file) > 0:
-    #    save_figure(fig_file)
 
     plt.show()
