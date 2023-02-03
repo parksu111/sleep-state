@@ -26,10 +26,19 @@ Each recording folder contains 7 different files:
   * 1 - REM
   * 2 - Wake
   * 3 - REM
+* sp_XXX_XXXXXXn1.mat - A MATLAB Data File containing the power spectrum of the raw EEG signals.
+* msp_XXX_XXXXXXn1.mat - A MATLAB Data File containing the power spectrum of the raw EMG signals.
 * **info.txt** - A text file containing basic information about the recording such as sampling rate, duration of the recording, etc.
 * Each recording is typically 8 hours or 24 hours long.
+* If the data files containing the power spectrum are not in the folder, they can be created by running the sleep_annotation_qt program found [here]().
 
 ### EDA
 A detailed EDA of sleep recordings can be found in the following [notebook]().
 
+### Multiple Annotations
+A common issue with sleep recordings, and biomedical signals in general, is that there is a lot of noise in the data and even experts do not agree completely on how to label parts of the signals. 
+
+In this project, we use a subset of the entire dataset that can be downloaded above. These 6 recordings were annotated by 4 different experts. The inter-rater agreement between these 4 experts is 88.099% (More details can be found [here]()). 
+
+When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here]().
 
