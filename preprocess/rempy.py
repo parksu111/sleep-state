@@ -62,7 +62,7 @@ def decode(M):
                 NREM = N
                 WAKE = W
     """
-    state_dict = {0:'N', 1:'R', 2:'W', 3:'N', 4:'N', 5:'N', 6:'N'}
+    state_dict = {0:'N', 1:'R', 2:'W', 3:'N', 4:'N', 5:'N', 6:'N', 7:'N'}
     res = [state_dict[x] for x in M]
     return res
 
