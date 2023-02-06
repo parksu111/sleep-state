@@ -33,17 +33,17 @@ Each recording folder contains 7 different files:
 * **msp_XXX_XXXXXXn1.mat** - A MATLAB Data File containing the power spectrum of the raw EMG signals.
 * **info.txt** - A text file containing basic information about the recording such as sampling rate, duration of the recording, etc.
 * Each recording is typically 8 hours or 24 hours long.
-* If the data files containing the power spectrum are not in the folder, they can be created by running the sleep_annotation_qt program found [here]().
+* If the data files containing the power spectrum are not in the folder, they can be created by running the sleep_annotation_qt program found [here](https://github.com/parksu111/sleep-annotation).
 
 ### EDA
-A detailed EDA of sleep recordings can be found in the following [notebook]().
+A detailed EDA of sleep recordings can be found in the following [notebook](https://github.com/parksu111/sleep-state/blob/master/EDA.ipynb).
 
 ### Multiple Annotations
 A common issue with sleep recordings, and biomedical signals in general, is that there is a lot of noise in the data and even experts do not agree completely on how to label parts of the signals. 
 
-In this project, we use a subset of the entire dataset that can be downloaded above. These 6 recordings were annotated by 4 different experts. The inter-rater agreement between these 4 experts is 88.099% (More details can be found [here]()). 
+In this project, we use a subset of the entire dataset that can be downloaded above. These 6 recordings were annotated by 4 different experts. The inter-rater agreement between these 4 experts is 88.099% (More details can be found [here](https://github.com/parksu111/sleep-state/blob/master/common_labels.ipynb)). 
 
-When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here]().
+When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here](https://drive.google.com/drive/folders/1vUQLXjNndqqXis1eRZ1o7XjSyOYZcKXu?usp=sharing).
 
 ## Preprocessing
 There are several ways to approach the problem of classifying sleep states using EEG and EMG data:
@@ -85,4 +85,4 @@ Model | Input type | # Windows | Accuracy | OOD Accuracy
 Classifier 1| Trace|      1    | 94.96%      | 89.96%
 
 The accuracy is calculated on the test dataset. OOD refers to the accuracy calculated on a separate dataset that was only annotated by me.
-The details of the results can be found in this [notebook]().
+The details of the results can be found in this [notebook](https://github.com/parksu111/sleep-state/blob/master/evaluate.ipynb).
