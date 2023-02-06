@@ -79,4 +79,7 @@ For this first classifier, we fine-tune the pretrained ResNet18 model. We modify
 ## Results
 Model | Input type | # Windows | Accuracy | OOD Accuracy
 ------|------------|-----------|----------|--------------
-Classifier 1| Trace|      1    | 94%      | 90%
+Classifier 1| Trace|      1    | 94.96%      | 89.96%
+
+The accuracy is calculated on the test dataset. OOD refers to the accuracy calculated on a separate dataset that was only annotated by me.
+The details of the results can be found in this [notebook]().
