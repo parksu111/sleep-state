@@ -73,8 +73,8 @@ This classifier makes use of 1 window images of the raw EEG1 waveform. Below is 
 For this first classifier, we fine-tune the pretrained ResNet18 model. We modify only the fully-connected layer at the end. All parameters besides those in the fully-connected layer are frozen.
 
 #### Files
-* **train.py** - Script to train the model.
-* **predict.py** - Script to make predictions on test data.
+* **train.py** - Script to train the model. Saves model parameters with highest accuracy as 'best.pt'.
+* **predict.py** - Script to make predictions on test data. Saves predictions in a csv file.
 
 ## Results
 Model | Input type | # Windows | Accuracy | OOD Accuracy
