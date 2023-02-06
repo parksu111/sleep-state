@@ -86,3 +86,7 @@ Classifier 1| Trace|      1    | 94.96%      | 89.96%
 
 The accuracy is calculated on the test dataset. OOD refers to the accuracy calculated on a separate dataset that was only annotated by me.
 The details of the results can be found in this [notebook](https://github.com/parksu111/sleep-state/blob/master/evaluate.ipynb).
+
+## To-do
+- [ ] Use spectrogram as input image.
+- [ ] Train LSTM using raw signal data.
