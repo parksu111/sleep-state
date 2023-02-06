@@ -1,4 +1,6 @@
 # Automatic Classification of Sleep States in Mice
+![alt text](https://github.com/parksu111/sleep-state/blob/master/img/sleep-state.png)
+Image was taken from this [paper](https://www.frontiersin.org/articles/10.3389/fpsyg.2020.01662/full).
 
 ## Introduction
 Mammalian sleep consists of 3 distinct brain states: Wakefulness, REM (Rapid Eye Movement) sleep, and NREM (non-REM) sleep. 
