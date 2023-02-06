@@ -63,3 +63,20 @@ In the cases of using either images of the waveform or the spectrogram, the prob
     * --common_labels: Whether or not to use commonly annotated windows. 0 means False and 1 means True. Defaults to 1.
     * --channel: Which of the 3 channels to use. 0 = EEG1, 1 = EEG2, 2 = EMG, 3 = All Three.
 * **split_data.py** - Split trace and spectrogram data into train and test set. Save key as csv file and move train and test files to separate folders.
+
+## Model
+### Classifier 1
+#### Input Data
+This classifier makes use of 1 window images of the raw EEG1 waveform. Below is an example:
+
+#### Model Architecture
+For this first classifier, we fine-tune the pretrained ResNet18 model. We modify only the fully-connected layer at the end. All parameters besides those in the fully-connected layer are frozen.
+
+#### Files
+* **train.py** - Script to train the model.
+* **predict.py** - Script to make predictions on test data.
+
+## Results
+Model | Input type | # Windows | Accuracy | OOD Accuracy
+------|------------|-----------|----------|--------------
+Classifier 1| Trace|      1    | 94%      | 90%
