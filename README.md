@@ -58,8 +58,8 @@ In the cases of using either images of the waveform or the spectrogram, the prob
   ```
   python make_im_data --input_dir $/path/to/input/recordings --output_dir $/path/to/output/folder --datatype trace/spectrogram --num_bins 1/3 --common_labels 0/1 --channel 0/1/2/3
   ```
-    * --datatype: Trace is the image of the raw waveform and spectrogram is the spectrogram of the raw waveform
-    * --num_bins: Number of windows to use. 1 refers to one 2.5 s window and 3 refers to 7.5 seconds with 2.5 seconds before and after the window of interest.
-    * --common_labels: Whether or not to use commonly annotated windows. 0 means False and 1 means True. Defaults to 1.
-    * --channel: Which of the 3 channels to use. 0 = EEG1, 1 = EEG2, 2 = EMG, 3 = All Three.
+      * --datatype: Trace is the image of the raw waveform and spectrogram is the spectrogram of the raw waveform
+      * --num_bins: Number of windows to use. 1 refers to one 2.5 s window and 3 refers to 7.5 seconds with 2.5 seconds before and after the window of interest.
+      * --common_labels: Whether or not to use commonly annotated windows. 0 means False and 1 means True. Defaults to 1.
+      * --channel: Which of the 3 channels to use. 0 = EEG1, 1 = EEG2, 2 = EMG, 3 = All Three.
 * **split_data.py** - Split trace and spectrogram data into train and test set. Save key as csv file and move train and test files to separate folders.
