@@ -7,11 +7,12 @@ Mammalian sleep consists of 3 distinct brain states: Wakefulness, REM (Rapid Eye
 These 3 states can be identified through inspection of EEG (electroencephalogram) and EMG (electromyogram) data. 
 A major bottleneck in sleep research is that hours of sleep recordings have to be manually annotated by experts, a very time consuming process. 
 Here, we will use deep neural networks to automatically classify sleep states based on EEG and EMG data obtained from mice. 
-The data used for this project were made available by dedicated researchers at the [Chung Lab](https://chunglab.med.upenn.edu/) and [Weber Lab](https://www.med.upenn.edu/weberlab/) at the 
-University of Pennsylvania Perelman School of Medicine.
+The data used for this project were made available by dedicated researchers at the [Chung Lab](https://chunglab.med.upenn.edu/) and [Weber Lab](https://www.med.upenn.edu/weberlab/) at the University of Pennsylvania Perelman School of Medicine.
 
 ## Data
-The data used for this project is available for download [here](). It is the same data used for the 2021 paper 'A probabilistic model for the ultradian timing of REM sleep in mice', which can be found [here](). The data repository contains 2 folders, 'code' and 'recordings'. The sleep recordings are in the 'recordings' folder.
+The data used for this project were made available by dedicated researchers at the [Chung Lab](https://chunglab.med.upenn.edu/) and [Weber Lab](https://www.med.upenn.edu/weberlab/) at the University of Pennsylvania Perelman School of Medicine. It is the same data used for the 2021 paper 'A probabilistic model for the ultradian timing of REM sleep in mice', which can be found [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009316).
+* The raw sleep recordings used for this project are available for download [here](https://upenn.app.box.com/s/3zcesr4a7l7hgb9andmq4di4t6zvaoql).
+* The processed images used for classification are available for download [here](https://drive.google.com/drive/folders/1vUQLXjNndqqXis1eRZ1o7XjSyOYZcKXu?usp=sharing).
 
 ### Recording Folder
 Each recording folder has a title of the following structure: 'XXX_XXXXXXn1'.
