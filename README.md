@@ -21,13 +21,13 @@ Each recording folder contains 7 different files:
 * **EEG.mat** - A MATLAB Data File containing the raw EEG signal data. Parietal EEG sampled at 1000Hz.
 * **EEG2.mat** - A MATLAB Data File containing the prefrontal EEG signal data sampled at 1000Hz.
 * **EMG.mat** - EMG recorded from the neck sampled at 1000Hz.
-* 3_remidx_XXX_XXXXXXn1.txt - A text file containing labels for each 2.5 s window of the sleep recording.
+* **3_remidx_XXX_XXXXXXn1.txt** - A text file containing labels for each 2.5 s window of the sleep recording.
   * 0 - Undefined
   * 1 - REM
   * 2 - Wake
   * 3 - REM
-* sp_XXX_XXXXXXn1.mat - A MATLAB Data File containing the power spectrum of the raw EEG signals.
-* msp_XXX_XXXXXXn1.mat - A MATLAB Data File containing the power spectrum of the raw EMG signals.
+* **sp_XXX_XXXXXXn1.mat** - A MATLAB Data File containing the power spectrum of the raw EEG signals.
+* **msp_XXX_XXXXXXn1.mat** - A MATLAB Data File containing the power spectrum of the raw EMG signals.
 * **info.txt** - A text file containing basic information about the recording such as sampling rate, duration of the recording, etc.
 * Each recording is typically 8 hours or 24 hours long.
 * If the data files containing the power spectrum are not in the folder, they can be created by running the sleep_annotation_qt program found [here]().
@@ -42,3 +42,24 @@ In this project, we use a subset of the entire dataset that can be downloaded ab
 
 When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here]().
 
+## Preprocessing
+There are several ways to approach the problem of classifying sleep states using EEG and EMG data:
+* Use the raw signal data.
+* Use images of the waveform.
+* Use spectrogram of the raw waveform.
+
+In the cases of using either images of the waveform or the spectrogram, the problem of classifying sleep states becomes an image classification task. We first approach the problem as an image classification task. I will continue to update the project with different approaches.
+
+### Files
+* **common_labels.py** - Script to find commonly labeled windows and save them as a json file.
+* **make_im_data.py** - Script to make image data from raw EEG and EMG signals.
+  * Can choose channel (eeg1, eeg2, emg), number of windows, raw trace vs. spectrogram
+  * How to use:
+  ```
+  python make_im_data --input_dir $/path/to/input/recordings --output_dir $/path/to/output/folder --datatype trace/spectrogram --num_bins 1/3 --common_labels 0/1 --channel 0/1/2/3
+  ```
+    * --datatype: Trace is the image of the raw waveform and spectrogram is the spectrogram of the raw waveform
+    * --num_bins: Number of windows to use. 1 refers to one 2.5 s window and 3 refers to 7.5 seconds with 2.5 seconds before and after the window of interest.
+    * --common_labels: Whether or not to use commonly annotated windows. 0 means False and 1 means True. Defaults to 1.
+    * --channel: Which of the 3 channels to use. 0 = EEG1, 1 = EEG2, 2 = EMG, 3 = All Three.
+* **split_data.py** - Split trace and spectrogram data into train and test set. Save key as csv file and move train and test files to separate folders.
