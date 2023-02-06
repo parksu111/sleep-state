@@ -7,12 +7,11 @@ Mammalian sleep consists of 3 distinct brain states: Wakefulness, REM (Rapid Eye
 These 3 states can be identified through inspection of EEG (electroencephalogram) and EMG (electromyogram) data. 
 A major bottleneck in sleep research is that hours of sleep recordings have to be manually annotated by experts, a very time consuming process. 
 Here, we will use deep neural networks to automatically classify sleep states based on EEG and EMG data obtained from mice. 
-The data used for this project were made available by dedicated researchers at the [Chung Lab](https://chunglab.med.upenn.edu/) and [Weber Lab](https://www.med.upenn.edu/weberlab/) at the University of Pennsylvania Perelman School of Medicine.
 
 ## Data
 The data used for this project were made available by dedicated researchers at the [Chung Lab](https://chunglab.med.upenn.edu/) and [Weber Lab](https://www.med.upenn.edu/weberlab/) at the University of Pennsylvania Perelman School of Medicine. It is the same data used for the 2021 paper 'A probabilistic model for the ultradian timing of REM sleep in mice', which can be found [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009316).
 * The raw sleep recordings used for this project are available for download [here](https://upenn.app.box.com/s/3zcesr4a7l7hgb9andmq4di4t6zvaoql).
-* The processed images used for classification are available for download [here](https://drive.google.com/drive/folders/1vUQLXjNndqqXis1eRZ1o7XjSyOYZcKXu?usp=sharing).
+* The processed images used for classification are available for download [here](https://drive.google.com/drive/folders/1v-PzV_-R47bKG65EnUDEsmWCFTlT4zAo?usp=share_link).
 
 ### Recording Folder
 Each recording folder has a title of the following structure: 'XXX_XXXXXXn1'.
@@ -41,9 +40,9 @@ A detailed EDA of sleep recordings can be found in the following [notebook](http
 ### Multiple Annotations
 A common issue with sleep recordings, and biomedical signals in general, is that there is a lot of noise in the data and even experts do not agree completely on how to label parts of the signals. 
 
-In this project, we use a subset of the entire dataset that can be downloaded above. These 6 recordings were annotated by 4 different experts. The inter-rater agreement between these 4 experts is 88.099% (More details can be found [here](https://github.com/parksu111/sleep-state/blob/master/common_labels.ipynb)). 
+In this project, we use a subset of the entire dataset that can be downloaded above. These 6 recordings were annotated by 4 different experts. The inter-rater agreement between these 4 experts is 88.099% (More details can be found in this [notebook](https://github.com/parksu111/sleep-state/blob/master/common_labels.ipynb)). 
 
-When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here](https://drive.google.com/drive/folders/1vUQLXjNndqqXis1eRZ1o7XjSyOYZcKXu?usp=sharing).
+When training our classification model, we only use data points for which all 4 experts agree. The different annotations are available for download [here](https://drive.google.com/drive/folders/1PLpvB6GAbd3y3Wu1qAsZDGW6x2iPqUnN?usp=share_link).
 
 ## Preprocessing
 There are several ways to approach the problem of classifying sleep states using EEG and EMG data:
@@ -78,6 +77,7 @@ For this first classifier, we fine-tune the pretrained ResNet18 model. We modify
 #### Files
 * **train.py** - Script to train the model. Saves model parameters with highest accuracy as 'best.pt'.
 * **predict.py** - Script to make predictions on test data. Saves predictions in a csv file.
+* **best.pt** - The final model parameters are available for download [here](https://drive.google.com/drive/folders/1tMhWEJwJuFSEvhqMSzvXg4wtxlxR00qm?usp=share_link).
 
 ## Results
 Model | Input type | # Windows | Accuracy | OOD Accuracy
