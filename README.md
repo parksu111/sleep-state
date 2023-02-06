@@ -69,7 +69,7 @@ In the cases of using either images of the waveform or the spectrogram, the prob
 ## Model
 ### Classifier 1
 #### Input Data
-This classifier makes use of 1 window images of the raw EEG1 waveform. Below is an example:
+This classifier makes use of 1 window images of the raw EEG1 waveform (Trace).
 
 #### Model Architecture
 For this first classifier, we fine-tune the pretrained ResNet18 model. We modify only the fully-connected layer at the end. All parameters besides those in the fully-connected layer are frozen.
